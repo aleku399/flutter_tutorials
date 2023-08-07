@@ -14,84 +14,172 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Dropdown Menu'),
+      home: MyHomePage(title: "Title"),
     );
   }
 }
 
-class MenuOption {
-  final String title;
-  final Function() onPressed;
+class Product {
+  Product({required this.name});
 
-  MenuOption({required this.title, required this.onPressed});
+  final String name;
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+typedef CartChangedCallBack = Function(Product product, bool inCart);
 
-  final String title;
+class ShoppingListItem extends StatelessWidget {
+  ShoppingListItem({
+    required this.product,
+    required this.onCartChanged,
+    required this.inCart,
+  }): super(key: ObjectKey(product));
+
+  final Product product;
+  final CartChangedCallBack onCartChanged;
+  final bool inCart;
+
+  Color _getBackgroundColor(BuildContext context) {
+
+    return inCart ? Colors.black54: Theme.of(context).primaryColor;
+  }
+
+  TextStyle? _getTextStyle(BuildContext context) {
+    if (!inCart) {
+      return null;
+    }
+
+    return  const TextStyle(
+      color: Colors.black54,
+      decoration: TextDecoration.lineThrough,
+    );
+  }
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  Widget build(BuildContext context) {
+    return ListTile(
+      onTap: () { 
+        onCartChanged(product, inCart);
+      },
+      leading: CircleAvatar(
+        backgroundColor: _getBackgroundColor(context),
+        child: Text(product.name[0]),
+      ),
+      title: Text(product.name, style: _getTextStyle(context)),
+    );
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  String selectedOption = 'All';
-  List<String> options = ['All', 'Rice', 'Beef', 'Chicken'];
+class ShoppingList extends StatefulWidget {
+  ShoppingList({required this.products, super.key});
+
+  final List<Product> products;
+
+  @override
+  State<ShoppingList> createState() => _ShoppingListState();
+}
+
+class _ShoppingListState extends State<ShoppingList> {
+  final _items = <Product>{};
+
+  void _handleCartChanged(Product product, bool inCart) {
+    setState(() {
+      if (inCart) {
+        _items.remove(product);
+      } else {
+        _items.add(product);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      children: widget.products.map((product) {
+        return ShoppingListItem(
+          product: product,
+          onCartChanged: _handleCartChanged,
+          inCart: _items.contains(product),
+        );
+      }).toList(),
+    );
+  }
+}
+
+class  MyHomePage extends StatefulWidget {
+  final String title;
+
+  MyHomePage({super.key, required this.title});
+
+  @override
+  State<MyHomePage> createState() => _MyHomePage();
+} 
+
+class _MyHomePage extends State<MyHomePage>{
+  int _count = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const IconButton(
+          icon: Icon(Icons.menu),
+          tooltip: "Navigation Menu",
+          onPressed: null,
+        ),
         title: Text(widget.title),
-        actions: [
-          PopupMenuButton<MenuOption>(
-            onSelected: (option) {
-              option.onPressed();
-            },
-            itemBuilder: (BuildContext context) {
-              return options.map((option) {
-                return PopupMenuItem<MenuOption>(
-                  value: MenuOption(
-                    title: option,
-                    onPressed: () {
-                      setState(() {
-                        selectedOption = option;
-                      });
-                    },
-                  ),
-                  child: Text(option),
-                );
-              }).toList();
-            },
+        actions: const [
+          IconButton(
+            icon: Icon(Icons.search),
+            tooltip: "Search",
+            onPressed: null,
           ),
         ],
-      ),
-      body: Center(
+      ), 
+      body: Container(
+        padding: const EdgeInsets.all(8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            DropdownButton<String>(
-              value: selectedOption,
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedOption = newValue!;
-                });
+            GestureDetector(
+              onTap: () {
+              print("Hello World");
               },
-              items: options.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
+              child: Container(
+                height: 50,
+                padding: const EdgeInsets.all(8),
+                margin: const EdgeInsets.symmetric(horizontal: 8),
+                decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.lightGreen[500],
+              ),
+                child: Center(
+                  child: Text("Hello World"),
+                ),
+              ),
             ),
-            SizedBox(height: 20),
-            Text(
-              'Selected Option: $selectedOption',
-              style: TextStyle(fontSize: 18),
+            Text("You have incremented ${_count}"),
+            SizedBox(height: 10),
+            Expanded(
+              child: ShoppingList(
+                products: [
+                  Product(name: "Chips"),
+                  Product(name: "Flour"),
+                  Product(name: "Rice"),
+                ],
+              ),
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: "Add",
+        child: Icon(Icons.add),
+        onPressed: () {
+          setState(() {
+            _count++;
+          });
+        },
       ),
     );
   }
