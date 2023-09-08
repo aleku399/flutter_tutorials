@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tutorials/Counter.dart';
 import 'package:flutter_tutorials/ShoppingList.dart';
 import 'package:flutter_tutorials/Layout.dart';
+import 'package:flutter_tutorials/Product.dart';
 
 void main() {
   runApp(const MyApp());
@@ -51,6 +52,9 @@ class _MyHomePage extends State<MyHomePage>{
       case 2:
         page = MyLayout();
         break;
+      case 3:
+        page = MyProducts();
+        break;
       default:
         throw  UnimplementedError("No widget selected for $selectedIndex");
     }
@@ -73,6 +77,10 @@ class _MyHomePage extends State<MyHomePage>{
                 NavigationRailDestination(
                   icon: Icon(Icons.dashboard),
                   label: Text("Layout"),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.production_quantity_limits),
+                  label: Text("Product List"),
                 ),
               ],
               selectedIndex: selectedIndex,
