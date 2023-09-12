@@ -1,80 +1,71 @@
 import 'package:flutter/material.dart';
 
 final title = Container(
-  padding: EdgeInsets.all(32),
+    padding: EdgeInsets.all(32),
     child: Row(
-    children: <Widget>[
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(bottom: 8),
-              child: Text(
-                'Lake Victoria',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+        children: <Widget>[
+            Expanded(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                        Container(
+                            padding: EdgeInsets.only(bottom: 8),
+                            child: Text("Lake Victoria", style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                            )),
+                        ),
+                        Text("Kampala, Uganda", style: TextStyle(
+                            color: Colors.grey[500],
+                        )),
+                    ],
                 ),
-              ),
             ),
-            Text(
-              'Kampala, Uganda',
-              style: TextStyle(
-                color: Colors.grey[500],
-              ),
-            ),
-          ],
-        ),
-      ),
-      FavoriteWidget(),
-    ],
-  ),
+            FavoriteWidget(),
+        ],
+    ),
 );
 
 class FavoriteWidget extends StatefulWidget {
-  const FavoriteWidget({super.key});
+    FavoriteWidget({super.key});
 
-  @override
-  State<FavoriteWidget> createState() => _FavoriteWidgetState();
+    @override
+    State<FavoriteWidget> createState() => _FavoriteWidgetState();
 }
 
 class _FavoriteWidgetState extends State<FavoriteWidget> {
-  
-  bool _isFavorite = true;
-  int _favoriteCount = 41;
+    int _favoriteCount = 41;
+    bool _isFavorite = true;
 
-  void _favoriteTap() {
-    setState(() {
-      if(_isFavorite) {
-        _isFavorite = false;
-        _favoriteCount -= 1;
-      } else {
-        _isFavorite = true;
-        _favoriteCount += 1;
-      }
-    });
-  }
+    void _tapFavorite() {
+        setState(() {
+            if (_isFavorite) {
+                _favoriteCount--;
+                _isFavorite = false;
+            } else {
+                _favoriteCount++;
+                _isFavorite = true;
+            }
+        });
+    }
 
-  @override
-  Widget build(BuildContext context) {
-    return  GestureDetector(
-      onTap: _favoriteTap,
-      child: Row(
-        children: [
-          Icon(
-            _isFavorite ? Icons.star : Icons.star_border,
-            color: Colors.red[500]
-          ),
-          SizedBox(
-            width: 18,
-            child: SizedBox(
-              child: Text('$_favoriteCount'),
+    @override
+    Widget build(BuildContext context) {
+        return GestureDetector(
+            onTap: _tapFavorite,
+            child: Row(
+                children: <Widget>[
+                    Container(
+                        child: _isFavorite ?
+                        Icon(Icons.star, color: Colors.red) : Icon(Icons.star_border),
+                    ),
+                    SizedBox(
+                        width: 18,
+                        child: Text("$_favoriteCount"),
+                    ),
+                ],
             ),
-          ),
-        ],
-      ),
-    );
-  }
+        );
+    }
 }
 
 final titleText = Container(
@@ -91,52 +82,50 @@ final titleText = Container(
 
 
 class MyLayout extends StatelessWidget {
-  const  MyLayout({super.key});
+    MyLayout({super.key});
 
-  Column _buildButtonColumn(Color color, IconData icon, String label) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Icon(
-          icon,
-          color: color,
-        ),
-        Container(
-          padding: EdgeInsets.only(top: 9),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+    Column _buildButtonColumn(IconData icon, Color color, String label) {
+        return Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+                Icon(
+                    icon,
+                    color: color,
+                ),
+                Container(
+                    padding: EdgeInsets.only(top: 9),
+                    child: Text(
+                        label,
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                        ),
+                    ),
+                ),
+            ],
+        ); 
+    }
 
-  @override
-  Widget build(BuildContext context) {
+    @override
+    Widget build(BuildContext context) {
 
-  Color color = Theme.of(context).primaryColor;
+        Color color = Theme.of(context).primaryColor;
 
-  Widget buttonSection = Row(
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    children: <Widget>[
-      _buildButtonColumn(color, Icons.call, 'Call'),
-      _buildButtonColumn(color, Icons.near_me, 'ROUTE'),
-      _buildButtonColumn(color, Icons.share, 'SHARE'),
-    ],
-  );
-
-  return ListView(
-        children: <Widget>[
-            Image.asset('assets/images/lake.jpeg', width: 600, fit: BoxFit.cover),
-            title,
-            buttonSection,
-            titleText,
-        ]
-    );
-  }
+        return ListView(
+            children: [
+                Image.asset("assets/images/lake.jpeg", fit: BoxFit.cover),
+                title,
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                        _buildButtonColumn(Icons.call, color, "CALL"),
+                        _buildButtonColumn(Icons.near_me, color, "ROUTE"),
+                        _buildButtonColumn(Icons.share, color, "SHARE"),
+                    ],
+                ),
+                titleText,
+            ],
+        );
+    }
 }

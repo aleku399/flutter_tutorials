@@ -21,7 +21,7 @@ class ShoppingListItem extends StatelessWidget {
 
   Color _getBackgroundColor(BuildContext context) {
 
-    return inCart ? Colors.black54: Theme.of(context).primaryColor;
+    return inCart ? Colors.black54 : Theme.of(context).primaryColor;
   }
 
   TextStyle? _getTextStyle(BuildContext context) {
