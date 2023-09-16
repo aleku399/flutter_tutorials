@@ -3,6 +3,7 @@ import 'package:flutter_tutorials/Counter.dart';
 import 'package:flutter_tutorials/ShoppingList.dart';
 import 'package:flutter_tutorials/Layout.dart';
 import 'package:flutter_tutorials/Product.dart';
+import 'package:flutter_tutorials/Horizon.dart';
 
 void main() {
   runApp(const MyApp());
@@ -55,6 +56,9 @@ class _MyHomePage extends State<MyHomePage>{
       case 3:
         page = MyProducts();
         break;
+      case 4:
+        page = Horizon();
+        break;
       default:
         throw  UnimplementedError("No widget selected for $selectedIndex");
     }
@@ -81,6 +85,10 @@ class _MyHomePage extends State<MyHomePage>{
                 NavigationRailDestination(
                   icon: Icon(Icons.production_quantity_limits),
                   label: Text("Product List"),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.wb_sunny),
+                  label: Text("Weather Forecast"),
                 ),
               ],
               selectedIndex: selectedIndex,
