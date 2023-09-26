@@ -4,6 +4,7 @@ import 'package:flutter_tutorials/ShoppingList.dart';
 import 'package:flutter_tutorials/Layout.dart';
 import 'package:flutter_tutorials/Product.dart';
 import 'package:flutter_tutorials/Horizon.dart';
+import 'package:flutter_tutorials/Parallax.dart';
 
 void main() {
   runApp(const MyApp());
@@ -59,6 +60,9 @@ class _MyHomePage extends State<MyHomePage>{
       case 4:
         page = Horizon();
         break;
+      case 5:
+        page = ParallaxRecipe();
+        break;
       default:
         throw  UnimplementedError("No widget selected for $selectedIndex");
     }
@@ -89,6 +93,10 @@ class _MyHomePage extends State<MyHomePage>{
                 NavigationRailDestination(
                   icon: Icon(Icons.wb_sunny),
                   label: Text("Weather Forecast"),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.add_location_alt_sharp),
+                  label: Text("Parallax Recipe"),
                 ),
               ],
               selectedIndex: selectedIndex,
