@@ -5,6 +5,7 @@ import 'package:flutter_tutorials/Layout.dart';
 import 'package:flutter_tutorials/Product.dart';
 import 'package:flutter_tutorials/Horizon.dart';
 import 'package:flutter_tutorials/Parallax.dart';
+import 'AnimationContainer.dart';
 
 void main() {
   runApp(const MyApp());
@@ -63,6 +64,9 @@ class _MyHomePage extends State<MyHomePage>{
       case 5:
         page = ParallaxRecipe();
         break;
+      case 6:
+        page = AnimationContainer();
+        break;
       default:
         throw  UnimplementedError("No widget selected for $selectedIndex");
     }
@@ -97,6 +101,10 @@ class _MyHomePage extends State<MyHomePage>{
                 NavigationRailDestination(
                   icon: Icon(Icons.add_location_alt_sharp),
                   label: Text("Parallax Recipe"),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.animation),
+                  label: Text("Animation"),
                 ),
               ],
               selectedIndex: selectedIndex,
