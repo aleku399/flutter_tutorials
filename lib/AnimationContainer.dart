@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 
-const _duration = Duration(milliseconds: 400);
+const _duration = Duration(seconds: 2);
 
 double randomBorderRadius() {
     return Random().nextDouble() * 64;
@@ -23,26 +23,31 @@ class AnimationContainer extends StatefulWidget {
     State<AnimationContainer> createState() => _AnimationContainerState();
 }
 
-class _AnimationContainerState extends State<AnimationContainer> {
-    late double _margin;
-    late double _radius;
-    late Color _color;
-
+class _AnimationContainerState extends State<AnimationContainer> with SingleTickerProviderStateMixin {
+    late AnimationController controller;
+    late Animation marginAnimation;
+    late Animation radiusAnimation;
+    late Animation colorAnimation;
+  
     @override
     void initState() {
         super.initState();
-        _color = randomColor();
-        _margin = randomMargin();
-        _radius = randomBorderRadius();
+        controller = AnimationController(
+            duration: _duration,
+            vsync: this,
+        );
+        marginAnimation = Tween<double>(begin: randomMargin(), end: randomMargin() ).animate(controller);
+        radiusAnimation = Tween<double>(begin:  randomBorderRadius(), end:  randomBorderRadius() ).animate(controller);
+        colorAnimation = ColorTween(begin: randomColor(), end: randomColor()).animate(controller);
+
+        controller.addListener(() {
+            setState(() {});
+        });
+ 
+        controller.repeat();
     }
 
-    void _animateContainer() {
-        setState(() {
-            _color = randomColor();
-            _radius = randomBorderRadius();
-            _margin = randomMargin();
-        });
-    }
+
 
 
     @override
@@ -54,26 +59,24 @@ class _AnimationContainerState extends State<AnimationContainer> {
                     SizedBox(
                         width: 160,
                         height: 160,
-                        child: AnimatedContainer(
-                            margin: EdgeInsets.all(_margin),
+                        child: Container(
+                            margin: EdgeInsets.all(marginAnimation.value),
                             decoration: BoxDecoration(
-                                color: _color,
-                                borderRadius: BorderRadius.circular(_radius),
+                                color: colorAnimation.value,
+                                borderRadius: BorderRadius.circular(radiusAnimation.value),
 
                             ),
-                            duration: _duration,
-                            curve: Curves.easeInOutBack,
                         ),
-                    ),
-                    SizedBox(height: 16),
-                    ElevatedButton(
-                        child: Text(
-                            "Animate Me"
-                        ),
-                        onPressed:  _animateContainer,
                     ),
                 ],
             ),
         );
     }
+
+    @override
+    void dispose() {
+        controller.dispose();
+        super.dispose();
+    }
+
 }
