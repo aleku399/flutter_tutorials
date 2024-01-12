@@ -8,6 +8,9 @@ import 'package:flutter_tutorials/Parallax.dart';
 import 'AnimationContainer.dart';
 import 'Refresh.dart';
 import 'Clock.dart';
+import 'Drawer.dart';
+import 'Contact.dart';
+import 'Bounce.dart';
 
 void main() {
   runApp(const MyApp());
@@ -75,6 +78,15 @@ class _MyHomePage extends State<MyHomePage>{
       case 8:
         page = Clock();
         break;
+      case 9:
+        page = MyDrawer();
+        break;
+      case 10:
+        page = ContactList();
+        break;
+      case 11:
+        page = Bounce();
+        break;
       default:
         throw  UnimplementedError("No widget selected for $selectedIndex");
     }
@@ -121,6 +133,18 @@ class _MyHomePage extends State<MyHomePage>{
                 NavigationRailDestination(
                   icon: Icon(Icons.rocket_launch),
                   label: Text("Clock"),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.view_headline),
+                  label: Text("Clock"),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.contacts),
+                  label: Text("Contacts"),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.open_with_rounded),
+                  label: Text("Bounce"),
                 ),
               ],
               selectedIndex: selectedIndex,
