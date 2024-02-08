@@ -11,6 +11,7 @@ import 'Clock.dart';
 import 'Drawer.dart';
 import 'Contact.dart';
 import 'Bounce.dart';
+import './card/play_session/play_session_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -61,13 +62,13 @@ class _MyHomePage extends State<MyHomePage>{
         page = MyLayout();
         break;
       case 3:
-        page = MyProducts();
+        page = const MyProducts();
         break;
       case 4:
-        page = Horizon();
+        page = const Horizon();
         break;
       case 5:
-        page = ParallaxRecipe();
+        page = const ParallaxRecipe();
         break;
       case 6:
         page = AnimationContainer();
@@ -82,10 +83,13 @@ class _MyHomePage extends State<MyHomePage>{
         page = MyDrawer();
         break;
       case 10:
-        page = ContactList();
+        page = const ContactList();
         break;
       case 11:
         page = Bounce();
+        break;
+      case 12:
+        page = const PlayerSessionScreen();
         break;
       default:
         throw  UnimplementedError("No widget selected for $selectedIndex");
@@ -145,6 +149,10 @@ class _MyHomePage extends State<MyHomePage>{
                 NavigationRailDestination(
                   icon: Icon(Icons.open_with_rounded),
                   label: Text("Bounce"),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.align_vertical_center_rounded),
+                  label: Text("Card"),
                 ),
               ],
               selectedIndex: selectedIndex,
